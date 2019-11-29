@@ -10,3 +10,5 @@ The file [scrollableTable.js](/js/scrollableTable.js) creates a sortable and scr
 
 ## Example
 An example is implemented in [index.html](index.html). You can just clone/download this repository and run it. No other dependencies are needed.
+
+<img src="screenshot.png" />
