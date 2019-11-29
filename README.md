@@ -5,7 +5,7 @@ The file [scrollableTable.js](/js/scrollableTable.js) creates a sortable and scr
 ## Features
 * Table is scrollable
 * Table columns can be sorted (See [jquery tablesorter](https://github.com/Mottie/tablesorter) which is used in here.)
-* Table hight will be adjusted if window size changes
+* Table hight will be adjusted when window size changes
 * By clicking on a row an event is sent which can be caught for data processing. (Only single selected row is implemented.)
 
 ## Example
