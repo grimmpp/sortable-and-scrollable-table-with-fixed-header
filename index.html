@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" media="all" href="css/styles.css">
+        
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+        <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+        <!-- https://github.com/Mottie/tablesorter -->
+        <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
+        <script type="text/javascript" src="js/scrollableTable.js"></script>
+    </head>
+    <body>
+        <div id="headline"><h2>Sortable and Scrollable Table with fixed Header!</h2></div>
+        <div id="wrapper"></div>
+
+        <pre id="displayArea">Chick on a row to display its content here.</pre>
+
+        <script type="text/javascript">
+            /** Generate Test Data */
+            var testData = []
+            for(var i=0; i<100; i++) {
+                testData.push({
+                    No1: Math.floor(100000 + Math.random() * 900000),
+                    No2: Math.floor(100000 + Math.random() * 900000),
+                    No3: Math.floor(100000 + Math.random() * 900000)
+                })
+            }
+
+            var scrollableTable = new scrollableTable('scrollableTable', 'wrapper')
+            scrollableTable.setHeader(["Number 1", "Number 2", "Number 3"])
+            scrollableTable.setTableContent(testData, "testDataEventType", ["No1", "No2", "No3"])
+
+            $( document ).on("testDataEventType", function(event, rowId) {
+                if (rowId !== "") {
+                    $('#displayArea').html(
+                        "'testDataEventType' from row with ID: "+rowId +" was triggered.\n\n"+ 
+                        "Row data: \n" +
+                        JSON.stringify( testData[rowId], null, 4) )
+                } else {
+                    $('#displayArea').html("Chick on a row to display its content here.")
+                }
+            });
+
+            $('#table').tablesorter(); 
+        </script>
+    </body>
+</html>

@@ -1,0 +1,131 @@
+
+html, body{
+  margin:0;
+  padding:0;
+
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+body { 
+  background: #eee;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  /* line-height: 1; */
+  color: #585858;
+}
+
+.scrollableTableSection {
+  position: relative;
+  border: 1px solid darkgrey;
+  padding-top: 36px;
+  background: rgb(169, 211, 240);
+  top: 39px;
+  left: 0px;
+  width: 600px;
+  display: block;
+  cursor: pointer;
+}
+
+.scrollableTableContainer {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.scrollableTable {
+  border-spacing: 0;
+  width: 100%;
+  background: white;
+}
+
+.scrollableTable td  {
+  border: 1px solid rgb(200, 200, 200);
+  border-bottom: none;
+  border-left: none;
+
+  padding: 4px 4px;
+  padding-right: 30px;
+}
+
+.scrollableTable th {
+  padding: 0px;
+  padding-left: 4px;
+  padding-right: 12px;
+  /* background: rgb(169, 211, 240); */
+}
+
+.scrollableTable th div{
+  position: absolute;
+  color: rgb(100,100,100);
+  padding: 9px 4px;
+  top: 0;
+  margin: 0 -5px;
+  line-height: normal;
+  border-left: 1px solid rgb(200, 200, 200);
+  text-align: left;
+  white-space: normal;
+
+  background-image: url('black-unsorted.gif');
+  background-repeat: no-repeat;
+  background-position: center right;
+}
+
+.scrollableTable th:first-child div{
+  border: none;
+}
+
+.scrollableTable thead tr th.headerSortUp div {
+  background-image: url('black-desc.gif');
+  background-repeat: no-repeat;
+  background-position: center right;
+}
+
+.scrollableTable thead tr th.headerSortDown div {
+  background-image: url('black-asc.gif');
+  background-repeat: no-repeat;
+  background-position: center right;
+}
+
+.scrollableTableSelectedRow {
+ background-color: #acd7ff;
+}
+
+#wrapper {
+  position: fixed;
+  border: 1px solid darkgrey;
+  top: 20px;
+  right: 20px;
+  bottom: 20px;
+  left: 20px;
+
+  margin: 0;
+}
+
+#headline {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  left: 20px;
+
+  padding: 4px;
+  margin: 0;
+
+  background-color: #ddd;
+  border: 1px solid darkgrey;
+
+  height: 31px;
+}
+
+#headline h2 {
+  margin: 2px;
+}
+
+#displayArea {
+  position: fixed;
+  border: 1px solid darkgrey;
+
+  top: 60px;
+  left: 634px;
+
+  width: 400px;
+  height: 200px;
+
+  white-space: pre-wrap;
+}
