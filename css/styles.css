@@ -28,6 +28,7 @@ body {
 .scrollableTableContainer {
   overflow-y: scroll;
   overflow-x: hidden;
+  background-color: white;
 }
 .scrollableTable {
   border-spacing: 0;
@@ -69,6 +70,20 @@ body {
 
 .scrollableTable th:first-child div{
   border: none;
+}
+
+.scrollableTableCollapsed {
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: 0px;
+  background-image: url('collapsed.png')
+}
+
+.scrollableTableExpanded {
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: 0px;
+  background-image: url('collapsed.png')
 }
 
 .scrollableTable thead tr th.headerSortUp div {
@@ -123,9 +138,10 @@ body {
 
   top: 60px;
   left: 634px;
+  bottom: 20px;
 
   width: 400px;
-  height: 200px;
+  /* height: 200px; */
 
   white-space: pre-wrap;
 }

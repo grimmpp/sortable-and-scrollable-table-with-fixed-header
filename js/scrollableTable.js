@@ -5,6 +5,8 @@ var scrollableTable = function(id) {
     var _id = id
     var removeHeightByPx = 120
     var lastSelectedRow = ""
+    var lastRowId = -1
+    var isTreeTable = false
 
     var create = function() {
         $('<section>').addClass("scrollableTableSection").append(
@@ -57,6 +59,19 @@ var scrollableTable = function(id) {
         }
     }
 
+    this.selectTreeTableRow = function(rowId, triggerEventName, itemName) {
+        if (lastSelectedRow != rowId) {
+            if (lastSelectedRow != "") {
+                $('#'+lastSelectedRow).children().removeClass("scrollableTableSelectedRow")
+            }
+
+            $("#"+rowId).children().addClass("scrollableTableSelectedRow")
+            lastSelectedRow = rowId
+
+            $( document ).trigger( triggerEventName, [ itemName ] )
+        }
+    }
+
 
     var selectPreviousRow = function() {
         if (lastSelectedRow != "" && !($('#'+lastSelectedRow).is(':first-child'))) {
@@ -70,7 +85,7 @@ var scrollableTable = function(id) {
         }
     }
 
-    this.setHeader = function(names) {
+    this.setTableHeader = function(names) {
         // clear first
         $('#'+id+' > thead').empty()
 
@@ -91,29 +106,103 @@ var scrollableTable = function(id) {
         })
     }
 
-    this.setTableContent = function(data, eventType, columns) {
-        $('#'+id+' > tbody').empty()
-        lastSelectedRow = ""
+    this.setTreeTableContent = function(data, eventType, columns, subtreePropertyName) {
+        isTreeTable = true
+        fillTable(data, eventType, columns, subtreePropertyName)
 
-        // Fill content
-        var count = 0
-        $.each(data, function(index) {
-            const rowId = id+'_rowId_'+count
-            var trElem = $('<tr>')
-                .attr('id', rowId)
-                .click(() => { root.selectRow(rowId, eventType, index) })
-            
-            $.each(columns, function(c_index, c_value) {
-                trElem.append($('<td>').text(data[index][c_value]))
-            })
-            
-            trElem.appendTo('#'+id)
-            count++
-        })
+        root.adjustHeaderSize()
+    }
+
+    this.setTableContent = function(data, eventType, columns) {
+        isTreeTable = false
+        fillTable(data, eventType, columns)
 
         root.adjustHeaderSize()
 
         $('#scrollableTable').tablesorter(); 
+    }
+
+    var fillTable = function(data, eventType, columns, subtreePropertyName="") {
+        $('#'+id+' > tbody').empty()
+        lastSelectedRow = ""
+
+        // Fill content
+        $.each(data, function(index) {
+            createRow(data, index, eventType, columns, subtreePropertyName)
+        })
+    }
+
+    var createRow = function(data, index, eventType, columns, subtreePropertyName) {
+        createChildRow(data, index, eventType, columns, subtreePropertyName, null,"",1);
+    }
+
+    var createChildRow = function(data, index, eventType, columns, subtreePropertyName, insertAfterElem, parentId, level) {
+        const rowId = id+'_rowId_'+ (++lastRowId)
+
+        var trElem = $('<tr>').attr('id', rowId).attr('level', level).attr('parentId', parentId)
+
+        if (isTreeTable) trElem.click(() => { root.selectTreeTableRow(rowId, eventType, index) })
+        else trElem.click(() => { root.selectRow(rowId, eventType, index) })
+
+        const distText = level*16
+        const distIcon=(level-1)*16
+
+        $.each(columns, function(c_index, c_value) {
+            trElem.append($('<td>').attr('parentId', parentId).text(data[index][c_value]))
+        })
+
+        // isTreeTable
+        if (isTreeTable) {
+            trElem.children().first().attr('style', 'padding-left: '+distText+'px; ')
+
+            // if element has subtree
+            if (data[index][subtreePropertyName] !== undefined && data[index][subtreePropertyName].length > 0 ) {
+                const fristTdElem = trElem.children().first();
+                
+                fristTdElem.removeClass("scrollableTableExpanded")
+                fristTdElem.addClass("scrollableTableCollapsed")
+                fristTdElem.attr('style', 'padding-left: '+distText+'px; background-position-x: '+distIcon+'px; ')
+                trElem.attr('status', 'closed')
+
+                trElem.click(() => {
+                    const subtreeData = data[index][subtreePropertyName]
+                    // const _rowId = rowId
+                    // const _level = level+1
+
+                    if ($('#'+rowId).attr('status') == 'closed') {
+                        $('#'+rowId).attr('status', 'open')
+                        // Fill content
+                        for (var i=subtreeData.length-1; i>=0; i--) {
+                            createChildRow(subtreeData, i, eventType, columns, subtreePropertyName, trElem, rowId, level+1)
+                        }
+                        fristTdElem.addClass("scrollableTableExpanded")
+                        fristTdElem.removeClass("scrollableTableCollapsed")
+
+                    } else {
+                        closeSubRows(rowId)
+                    }
+
+                    root.adjustHeaderSize() 
+                })
+            }
+        }
+        
+        if (insertAfterElem == null) {
+            trElem.appendTo('#'+id)
+        } else {
+            trElem.insertAfter(insertAfterElem)
+        }
+    }
+
+    var closeSubRows = function(parentRowId) {
+        $('#'+parentRowId).attr('status', 'closed')
+        
+        $( "td[parentId='"+parentRowId+"']" ).each(function(index, elem) {
+            var parentTr = $( document ).find( elem ).parent()
+            if (parentTr.attr('status') == 'open') closeSubRows(parentTr.attr('id'))
+        })
+
+        $( "td[parentId='"+parentRowId+"']" ).parent().remove()
     }
 
     this.clearTable = function() {

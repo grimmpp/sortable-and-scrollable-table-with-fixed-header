@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" media="all" href="css/styles.css">
+        
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+        <!-- https://jquery.com/download/ -->
+        <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+        <!-- https://github.com/Mottie/tablesorter -->
+        <!-- https://mottie.github.io/tablesorter/docs/ -->
+        <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
+        <script type="text/javascript" src="js/scrollableTable.js"></script>
+    </head>
+    <body>
+        <div id="headline"><h2>Sortable and Scrollable Table with fixed Header!</h2></div>
+        <div id="wrapper"></div>
+
+        <pre id="displayArea">Chick on a row to display its content here.</pre>
+
+        <script type="text/javascript">
+            /** Generate Test Data */
+            var testData = [
+                {
+                    "id": 1,
+                    "name": "name1",
+                    "value": Math.floor(100000 + Math.random() * 900000),
+                    "subtree": [
+                        {
+                            "id": 11,
+                            "name": "name1.1",
+                            "value": Math.floor(100000 + Math.random() * 900000),
+                            "subtree": []
+                        },{
+                            "id": 12,
+                            "name": "name1.2",
+                            "value": Math.floor(100000 + Math.random() * 900000),
+                            "subtree": []
+                        },{
+                            "id": 13,
+                            "name": "name1.3",
+                            "value": Math.floor(100000 + Math.random() * 900000),
+                            "subtree": [
+                                {
+                                    "id": 131,
+                                    "name": "name1.3.1",
+                                    "value": Math.floor(100000 + Math.random() * 900000),
+                                    "subtree": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 2,
+                    "name": "name2",
+                    "value": Math.floor(100000 + Math.random() * 900000),
+                    "subtree": []
+                },
+                {
+                    "id": 3,
+                    "name": "name3",
+                    "value": Math.floor(100000 + Math.random() * 900000)
+                },
+                {
+                    "id": 4,
+                    "name": "name4",
+                    "value": Math.floor(100000 + Math.random() * 900000),
+                    "subtree": [
+                        {
+                            "id": 41,
+                            "name": "name4.1",
+                            "value": Math.floor(100000 + Math.random() * 900000),
+                            "subtree": []
+                        }
+                    ]
+                }
+            ]
+
+            /** Table creation */
+            var scrollableTable = new scrollableTable('scrollableTable', 'wrapper')
+            scrollableTable.setTableHeader(["Name", "Id", "Value"])
+            scrollableTable.setTreeTableContent(testData, "testDataEventType", ["name", "id","value"], "subtree")
+
+            /** Event processing */
+            $( document ).on("testDataEventType", function(event, rowId) {
+                if (rowId !== "") {
+                    $('#displayArea').html(
+                        "'testDataEventType' from row with ID: "+rowId +" was triggered.\n\n"+ 
+                        "Row data: \n" +
+                        JSON.stringify( testData[rowId], null, 4) )
+                } else {
+                    $('#displayArea').html("Chick on a row to display its content here.")
+                }
+            });
+
+        </script>
+    </body>
+</html>
