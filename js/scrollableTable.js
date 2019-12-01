@@ -59,7 +59,7 @@ var scrollableTable = function(id) {
         }
     }
 
-    this.selectTreeTableRow = function(rowId, triggerEventName, itemName) {
+    this.selectTreeTableRow = function(rowId, triggerEventName, nestedIndex) {
         if (lastSelectedRow != rowId) {
             if (lastSelectedRow != "") {
                 $('#'+lastSelectedRow).children().removeClass("scrollableTableSelectedRow")
@@ -68,7 +68,7 @@ var scrollableTable = function(id) {
             $("#"+rowId).children().addClass("scrollableTableSelectedRow")
             lastSelectedRow = rowId
 
-            $( document ).trigger( triggerEventName, [ itemName ] )
+            $( document ).trigger( triggerEventName, [ nestedIndex ] )
         }
     }
 
@@ -133,15 +133,20 @@ var scrollableTable = function(id) {
     }
 
     var createRow = function(data, index, eventType, columns, subtreePropertyName) {
-        createChildRow(data, index, eventType, columns, subtreePropertyName, null,"",1);
+        var indexes = [index]
+        createChildRow(data, index, eventType, columns, subtreePropertyName, null,"",1, indexes);
     }
 
-    var createChildRow = function(data, index, eventType, columns, subtreePropertyName, insertAfterElem, parentId, level) {
+    var createChildRow = function(data, index, eventType, columns, subtreePropertyName, insertAfterElem, parentId, level, parentIndexes) {
         const rowId = id+'_rowId_'+ (++lastRowId)
 
         var trElem = $('<tr>').attr('id', rowId).attr('level', level).attr('parentId', parentId)
 
-        if (isTreeTable) trElem.click(() => { root.selectTreeTableRow(rowId, eventType, index) })
+        // var nestedIndex = "";
+        // if ( (""+parentIndex).length > 0) nestedIndex = parentIndex +","+index
+        // else nestedIndex = index
+
+        if (isTreeTable) trElem.click(() => { root.selectTreeTableRow(rowId, eventType, parentIndexes) })
         else trElem.click(() => { root.selectRow(rowId, eventType, index) })
 
         const distText = level*16
@@ -173,7 +178,10 @@ var scrollableTable = function(id) {
                         $('#'+rowId).attr('status', 'open')
                         // Fill content
                         for (var i=subtreeData.length-1; i>=0; i--) {
-                            createChildRow(subtreeData, i, eventType, columns, subtreePropertyName, trElem, rowId, level+1)
+                            var _indexes = []
+                            parentIndexes.forEach(function(_i){ _indexes.push(_i)})
+                            _indexes.push(i)
+                            createChildRow(subtreeData, i, eventType, columns, subtreePropertyName, trElem, rowId, level+1, _indexes)
                         }
                         fristTdElem.addClass("scrollableTableExpanded")
                         fristTdElem.removeClass("scrollableTableCollapsed")

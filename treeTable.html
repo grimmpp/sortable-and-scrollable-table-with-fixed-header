@@ -82,15 +82,19 @@
             scrollableTable.setTreeTableContent(testData, "testDataEventType", ["name", "id","value"], "subtree")
 
             /** Event processing */
-            $( document ).on("testDataEventType", function(event, rowId) {
-                if (rowId !== "") {
-                    $('#displayArea').html(
-                        "'testDataEventType' from row with ID: "+rowId +" was triggered.\n\n"+ 
-                        "Row data: \n" +
-                        JSON.stringify( testData[rowId], null, 4) )
-                } else {
-                    $('#displayArea').html("Chick on a row to display its content here.")
-                }
+            $( document ).on("testDataEventType", function(event, nestedIndex) {
+                console.log("NestedIndex: "+JSON.stringify(nestedIndex))
+                
+                var object = testData[nestedIndex[0]]
+                for(var i=1; i<nestedIndex.length; i++) { object = object.subtree[nestedIndex[i]] }
+                
+                $('#displayArea').html(
+                    "'testDataEventType' from row with ID: "+JSON.stringify(nestedIndex) +" was triggered.\n\n"+ 
+                    "Row data: \n" +
+                    JSON.stringify( object, null, 4) )
+                // } else {
+                //     $('#displayArea').html("Chick on a row to display its content here.")
+                // }
             });
 
         </script>
