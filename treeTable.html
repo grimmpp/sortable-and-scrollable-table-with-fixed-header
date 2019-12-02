@@ -76,6 +76,7 @@
                 }
             ]
 
+            // add more test data so that we will see the scrollbar
             for(var i=6; i<50; i++) {
                 testData.push( {"id": i, "name": "name"+i, "value": Math.floor(100000 + Math.random() * 900000) } )
             }
@@ -88,6 +89,7 @@
             // or e.g.: scrollableTable.setTableHeight(500)
 
             /** Event processing */
+            // nestedIndex is an array which contains for every level an index
             $( document ).on("testDataEventType", function(event, nestedIndex) {
                 console.log("NestedIndex: "+JSON.stringify(nestedIndex))
                 
