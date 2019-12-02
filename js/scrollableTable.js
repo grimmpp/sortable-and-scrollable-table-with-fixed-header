@@ -15,14 +15,6 @@ var scrollableTable = function(id, wrapperId) {
                     $('<thead>').attr("id", "scrollableTableHeader"), $('<tbody>') )
         )).prependTo('#'+wrapperId);
 
-        // // set listener to adjust height
-        // $( window ).resize(function() {
-        //     $('.scrollableTableContainer').height( $( window ).height() - removeHeightByPx )
-        // })
-
-        // // adjust height
-        // $('.scrollableTableContainer').height( $( window ).height() - removeHeightByPx )
-
         $(document).keydown(function(e) { 
             if (e.key == "ArrowUp") selectPreviousRow()
             if (e.key == "ArrowDown") selectNextRow()
