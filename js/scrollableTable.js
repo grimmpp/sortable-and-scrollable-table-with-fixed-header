@@ -1,5 +1,5 @@
 
-var scrollableTable = function(id) {
+var scrollableTable = function(id, wrapperId) {
 
     var root = this
     var _id = id
@@ -10,23 +10,37 @@ var scrollableTable = function(id) {
 
     var create = function() {
         $('<section>').addClass("scrollableTableSection").append(
-            $('<div>').addClass("scrollableTableContainer").append(
+            $('<div>').attr('id', id+'_scrollableTableContainer').addClass("scrollableTableContainer").append(
                 $('<table>').attr('id', id).addClass("scrollableTable").append(
                     $('<thead>').attr("id", "scrollableTableHeader"), $('<tbody>') )
-        )).prependTo('#wrapper');
+        )).prependTo('#'+wrapperId);
 
-        // set listener to adjust height
-        $( window ).resize(function() {
-            $('.scrollableTableContainer').height( $( window ).height() - removeHeightByPx )
-        })
+        // // set listener to adjust height
+        // $( window ).resize(function() {
+        //     $('.scrollableTableContainer').height( $( window ).height() - removeHeightByPx )
+        // })
 
-        // adjust height
-        $('.scrollableTableContainer').height( $( window ).height() - removeHeightByPx )
+        // // adjust height
+        // $('.scrollableTableContainer').height( $( window ).height() - removeHeightByPx )
 
         $(document).keydown(function(e) { 
             if (e.key == "ArrowUp") selectPreviousRow()
             if (e.key == "ArrowDown") selectNextRow()
         })
+    }
+
+    this.setTableHeight = function(height) {
+
+        if ($.isFunction(height)) {
+            $('#'+id+'_scrollableTableContainer').height( height() )
+
+            // add listener for window resize events
+            $( window ).resize(function() {
+                $('.scrollableTableContainer').height( height )
+            })
+        } else {
+            $('#'+id+'_scrollableTableContainer').height( height )
+        }
     }
 
     var getNestedProperty = function(obj, propArray) {

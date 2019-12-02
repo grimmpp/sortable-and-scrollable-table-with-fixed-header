@@ -19,7 +19,7 @@ body {
   padding-top: 36px;
   background: rgb(169, 211, 240);
   top: 39px;
-  left: 0px;
+  left: -1px;
   width: 600px;
   display: block;
   cursor: pointer;
@@ -29,6 +29,8 @@ body {
   overflow-y: scroll;
   overflow-x: hidden;
   background-color: white;
+  /* HEIGHT CAN BE SET HERE */
+  /* height: 500px; */
 }
 .scrollableTable {
   border-spacing: 0;
