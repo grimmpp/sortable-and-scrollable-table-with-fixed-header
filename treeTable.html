@@ -76,6 +76,10 @@
                 }
             ]
 
+            for(var i=6; i<50; i++) {
+                testData.push( {"id": i, "name": "name"+i, "value": Math.floor(100000 + Math.random() * 900000) } )
+            }
+
             /** Table creation */
             var scrollableTable = new scrollableTable('scrollableTable', 'wrapper')
             scrollableTable.setTableHeader(["Name", "Id", "Value"])
