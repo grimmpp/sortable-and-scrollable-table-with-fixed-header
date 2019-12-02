@@ -2,8 +2,6 @@
 var scrollableTable = function(id, wrapperId) {
 
     var root = this
-    var _id = id
-    var removeHeightByPx = 120
     var lastSelectedRow = ""
     var lastRowId = -1
     var isTreeTable = false
