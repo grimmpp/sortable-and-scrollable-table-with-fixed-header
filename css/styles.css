@@ -22,7 +22,6 @@ body {
   left: -1px;
   width: 600px;
   display: block;
-  cursor: pointer;
 }
 
 .scrollableTableContainer {
@@ -45,6 +44,8 @@ body {
 
   padding: 4px 4px;
   padding-right: 30px;
+
+  cursor: pointer;
 }
 
 .scrollableTable th {
@@ -64,10 +65,14 @@ body {
   border-left: 1px solid rgb(200, 200, 200);
   text-align: left;
   white-space: normal;
+}
 
+.scrollableTableHeaderBackground {
   background-image: url('black-unsorted.gif');
   background-repeat: no-repeat;
   background-position: center right;
+
+  cursor: pointer;
 }
 
 .scrollableTable th:first-child div{

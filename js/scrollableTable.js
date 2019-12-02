@@ -108,6 +108,16 @@ var scrollableTable = function(id, wrapperId) {
         $('#'+id+' > thead > tr').children('th').each(function () {
             $(this).children().first().width( $(this).width() )
         })
+
+        refreshHeaderBackground()
+    }
+
+    var refreshHeaderBackground = function() {
+        if (isTreeTable) {
+            $('#scrollableTableHeader > tr > th > div').removeClass('scrollableTableHeaderBackground')
+        } else {
+            $('#scrollableTableHeader > tr > th > div').addClass('scrollableTableHeaderBackground')
+        }
     }
 
     this.setTreeTableContent = function(data, eventType, columns, subtreePropertyName) {
