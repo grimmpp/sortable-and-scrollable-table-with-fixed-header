@@ -46,6 +46,8 @@ body {
   padding-right: 30px;
 
   cursor: pointer;
+
+  font-size: 10pt;
 }
 
 .scrollableTable th {
@@ -64,7 +66,8 @@ body {
   line-height: normal;
   border-left: 1px solid rgb(200, 200, 200);
   text-align: left;
-  white-space: normal;
+  white-space: nowrap;
+  font-size: 12pt;
 }
 
 .scrollableTableHeaderBackground {

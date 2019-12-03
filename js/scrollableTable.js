@@ -120,10 +120,19 @@ var scrollableTable = function(id, wrapperId) {
     }
 
     this.adjustHeaderSize = function() {
+        //  set size to 0
+        $('#'+id+' > thead > tr').children('th').each(function () {
+            var divElem = $(this).children().first()
+            $(this).append( $('<span>').text(divElem.text()) )
+            divElem.width( 0 )
+        })
         // Adjust size
         $('#'+id+' > thead > tr').children('th').each(function () {
             $(this).children().first().width( $(this).width() )
+            $(this).width( $(this).width() )
         })
+        // remove text from th
+        $('#'+id+' > thead > tr > th').children('span').remove()
 
         refreshHeaderBackground()
     }
