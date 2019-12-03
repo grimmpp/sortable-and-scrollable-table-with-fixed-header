@@ -89,6 +89,22 @@ var scrollableTable = function(id, wrapperId) {
         }
     }
 
+    this.collapseTree = function() {
+        while ($( "tr[status='open']" ).length > 0) {
+            $( "tr[status='closed']" ).each(function(index, elem) {
+                elem.click()
+            })
+        }
+    }
+
+    this.expandTree = function() {
+        while ($( "tr[status='closed']" ).length > 0) {
+            $( "tr[status='closed']" ).each(function(index, elem) {
+                elem.click()
+            })
+        }
+    }
+
     this.setTableHeader = function(names) {
         // clear first
         $('#'+id+' > thead').empty()

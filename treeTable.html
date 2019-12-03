@@ -87,6 +87,7 @@
             scrollableTable.setTreeTableContent(testData, "testDataEventType", ["name", "id","value"], "subtree")
             scrollableTable.setTableHeight( () => { return $( window ).height() - 118 } )
             // or e.g.: scrollableTable.setTableHeight(500)
+            scrollableTable.expandTree()
 
             /** Event processing */
             // nestedIndex is an array which contains for every level an index
