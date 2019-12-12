@@ -25,15 +25,12 @@ var scrollableTable = function(id, wrapperId) {
             }
             else if (e.key === "ArrowRight") openCurrentRow()
             else if (e.key === "ArrowLeft") closeCurrentRow()
-            else {
-                e.view.event.preventDefault();
-            }
         })
     }
 
     var isSelectedRowCloseToTop = function() {
         if (lastSelectedRow != '') {
-            if (Math.abs($('#'+lastSelectedRow).offset().top - $('#'+id+'_scrollableTableContainer').offset().top) < 50) return true
+            if (($('#'+lastSelectedRow).offset().top - $('#'+id+'_scrollableTableContainer').offset().top) < 50) return true
         }
         return false
     }
@@ -41,7 +38,7 @@ var scrollableTable = function(id, wrapperId) {
     var isSelectedRowCloseToBottom = function() {
         if (lastSelectedRow != '') {
             var height = $('#'+id+'_scrollableTableContainer').height()
-            if (Math.abs($('#'+lastSelectedRow).offset().top - height) < 50) return true
+            if ((height - $('#'+lastSelectedRow).offset().top) < 50) return true
         }
         return false
     }
