@@ -114,13 +114,21 @@ body {
 
 #wrapper {
   position: fixed;
-  border: 1px solid darkgrey;
-  top: 20px;
+  /* border: 1px solid red; */
+  top: 56px;
   right: 20px;
   bottom: 20px;
   left: 20px;
 
   margin: 0;
+}
+
+#bar {
+  position: fixed;
+  top: 64px;
+  left: 20px;
+  padding: 4px;
+  z-index: 5;
 }
 
 #headline {
@@ -146,7 +154,7 @@ body {
   position: fixed;
   border: 1px solid darkgrey;
 
-  top: 60px;
+  top: 82px;
   left: 634px;
   bottom: 20px;
 

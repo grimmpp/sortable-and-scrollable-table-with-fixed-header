@@ -10,6 +10,7 @@
     </head>
     <body>
         <div id="headline"><h2>Sortable and Scrollable TreeTable with fixed Header!</h2></div>
+        <div id="bar">Search: <input id="searchField" type="text" value="" oninput="filterTable()"></div>
         <div id="wrapper"></div>
 
         <pre id="displayArea">Chick on a row to display its content here.</pre>
@@ -83,10 +84,12 @@
             var scrollableTable = new scrollableTable('scrollableTable', 'wrapper')
             scrollableTable.setTableHeader(["Name", "Id", "Value"])
             scrollableTable.setTableContent(testData, "testDataEventType", ["name", "id","value"], "subtree")
-            scrollableTable.setTableHeight( () => { return $( window ).height() - 118 } )
+            scrollableTable.setTableHeight( () => { return $( window ).height() - 118 -30 } )
             // or e.g.: scrollableTable.setTableHeight(500)
             scrollableTable.expandTree()
             scrollableTable.sortByColumnName("Name")
+
+
 
             /** Event processing */
             // nestedIndex is an array which contains for every level an index
@@ -102,6 +105,13 @@
                     JSON.stringify( object, null, 4) )
             });
 
-        </script>
+            function filterTable() {
+                var filterString = $('#searchField').val()
+                scrollableTable.filter(filterString)
+            }
+
+            $('#searchField').focus()
+
+            </script>
     </body>
 </html>

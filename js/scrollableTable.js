@@ -322,6 +322,14 @@ var scrollableTable = function(id, wrapperId) {
         $('#scrollableTable > tbody').empty()
     }
 
+    var getRowId = function(row){
+        return row.attr('id')
+    }
+
+    var getCellValueFromTable = function(row, column) {
+        return row.children().eq(column).text()
+    }
+
     /**
      *      SORT FUNCTIONS
      */
@@ -483,14 +491,55 @@ var scrollableTable = function(id, wrapperId) {
      *      END SORT FUNCTIONS
      */
 
-    var getRowId = function(row){
-        return row.attr('id')
+    
+    /**
+     *      FILTER FUNCTIONS
+     */
+
+
+    this.clearFilter = function() {
+        filter("")
     }
 
-    var getCellValueFromTable = function(row, column) {
-        return row.children().eq(column).text()
+
+    var containsRowSearchString = function(row, searchString) {
+        var result = false
+
+        row.children('td').each((index, _td) => {
+            var tdElem = $(_td)
+            if (tdElem.text().toLowerCase().indexOf(searchString) > -1) {
+                result = true
+                return
+            }
+        })
+
+        return result
     }
 
+    var makeParentsVisible = function(parentId) {
+        if (parentId.indexOf('root') == -1) {
+            $('#'+parentId).css('display', '')
+            makeParentsVisible($('#'+parentId).attr('parentId'))
+        }
+    }
+
+    this.filter = function(searchString) {
+        var rows = $('#scrollableTable > tbody > tr')
+
+        rows.each((index, _row) => {
+            var row = $(_row)
+            if (!containsRowSearchString(row, searchString.toLowerCase())) {
+                row.css('display', 'none')
+            } else {
+                row.css('display', '')
+                makeParentsVisible($(row).attr('parentId'))
+            }
+        })
+    }
+
+    /**
+     *      END FILTER FUNCTIONS
+     */
     
 
     create()
