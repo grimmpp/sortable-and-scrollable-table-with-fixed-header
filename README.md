@@ -5,9 +5,9 @@ The file [scrollableTable.js](/js/scrollableTable.js) creates a sortable and scr
 ## Features
 * Table can be used as TreeTable
 * Table is scrollable
-* Table columns can be sorted
-* Table content can be filtered
-* Table height can be set statically or as function which dynamically adjusts the height of the table. (See example in index.html)
+* Table columns can be sorted (stable sort)
+* Table content can be filtered (Parent nodes in TreeTable are displayed as well)
+* Table height can be optionally set statically (absolute value in px) or as function which dynamically adjusts the height of the table. (See example in [index.html](index.html) or [treeTable.html](treeTable.html))
 * By clicking on a row an event is sent which can be caught for data processing. (Only single selected row implemented.)
 
 ## Example
