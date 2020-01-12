@@ -15,5 +15,6 @@ An example is implemented in [index.html](index.html). You can just clone/downlo
 <img src="screenshot.png" />
 
 ## TreeTable Version
+An example is implemented in [treeTable.html](treeTable.html).
 
 <img src="screenshotTreeTable.png" />
