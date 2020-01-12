@@ -385,11 +385,11 @@ var scrollableTable = function(id, wrapperId) {
 
             // sort list which have entered given parentId
             do {
-                var value1 = getValueFromTable(row1, columnIndex)
+                var value1 = getCellValueFromTable(row1, columnIndex)
                 var row2 = findNextTableRowOnSameLevel(row1)
                 // if there is no second element in the same subtree
                 if (row2 === undefined) break;
-                var value2 = getValueFromTable(row2, columnIndex)
+                var value2 = getCellValueFromTable(row2, columnIndex)
 
                 handleSubtree(row2, columnIndex, sortDir)
 
@@ -487,8 +487,8 @@ var scrollableTable = function(id, wrapperId) {
         return row.attr('id')
     }
 
-    var getValueFromTable = function(rowElem, column) {
-        return rowElem.children().eq(column).text()
+    var getCellValueFromTable = function(row, column) {
+        return row.children().eq(column).text()
     }
 
     
