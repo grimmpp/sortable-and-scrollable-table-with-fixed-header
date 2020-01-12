@@ -84,7 +84,7 @@
             var scrollableTable = new scrollableTable('scrollableTable', 'wrapper')
             scrollableTable.setTableHeader(["Name", "Id", "Value"])
             scrollableTable.setTableContent(testData, "testDataEventType", ["name", "id","value"], "subtree")
-            scrollableTable.setTableHeight( () => { return $( window ).height() - 118 -30 } )
+            scrollableTable.setTableHeight( () => { return $( window ).height() - 166 } )
             // or e.g.: scrollableTable.setTableHeight(500)
             scrollableTable.expandTree()
             scrollableTable.sortByColumnName("Name")
