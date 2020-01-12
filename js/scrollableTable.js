@@ -381,6 +381,16 @@ var scrollableTable = function(id, wrapperId) {
         }
     }
 
+    var defaultCompareFunction = function(a,b) {
+        return a.localeCompare(b, undefined, {usage: 'sort', numeric: true, sensitivity: 'base'})
+    }
+
+    var compareFunction = defaultCompareFunction
+
+    this.setCompareFunctionForSorting = function(f) {
+        compareFunction = f
+    }
+
     var sortSubtreeByColumn = function(parentId, columnIndex, sortDir) {
         // bubbleSort(Array A)
         //     for (n=A.size; n>1; --n){
@@ -415,7 +425,7 @@ var scrollableTable = function(id, wrapperId) {
 
                 // console.log("compare: "+firstValue.localeCompare(secondValue))
 
-                if (value1.localeCompare(value2) == sortDir) {
+                if (compareFunction(value1, value2) == sortDir) {
                     // move first element after second
                     moveRowAfter(row1, row2)
                 }
@@ -426,7 +436,7 @@ var scrollableTable = function(id, wrapperId) {
             } while(getRowId(row1) != undefined && getRowId(row2) != undefined )
             // console.log("############################################")
         }
-     }
+    }
 
     var handleSubtree = function(row, columnIndex, sortDir) {
         if (hasRowSubtree(row) && subtreeIsNotSorted(row)) {

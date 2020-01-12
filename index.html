@@ -30,8 +30,12 @@
             var scrollableTable = new scrollableTable('scrollableTable', 'wrapper')
             scrollableTable.setTableHeader(["Number 1", "Number 2", "Number 3"])
             scrollableTable.setTableContent(testData, "testDataEventType", ["No1", "No2", "No3"])
-            scrollableTable.setTableHeight( () => { return $( window ).height() - 166 } )
-            // or e.g.: scrollableTable.setTableHeight(500)
+            /* optional */ scrollableTable.setTableHeight( () => { return $( window ).height() - 166 } )
+                           // or e.g.: scrollableTable.setTableHeight(500)
+            /* optional */ scrollableTable.setCompareFunctionForSorting( function(a,b) {
+                return a.localeCompare(b, undefined, {usage: 'sort', numeric: true, sensitivity: 'base'}) 
+            })
+            /* optional */ scrollableTable.sortByColumnName("Number 1")
 
             /** Event processing */
             $( document ).on("testDataEventType", function(event, rowId) {
