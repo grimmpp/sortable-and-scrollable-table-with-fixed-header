@@ -6,9 +6,6 @@
         <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
         <!-- https://jquery.com/download/ -->
         <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
-        <!-- https://github.com/Mottie/tablesorter -->
-        <!-- https://mottie.github.io/tablesorter/docs/ -->
-        <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
         <script type="text/javascript" src="js/scrollableTable.js"></script>
     </head>
     <body>
@@ -20,6 +17,7 @@
         <script type="text/javascript">
             /** Generate Test Data */
             var testData = [
+                {"id": 0, "name": "name0", "value": Math.floor(100000 + Math.random() * 900000) },
                 {
                     "id": 1,
                     "name": "name1",
@@ -84,10 +82,11 @@
             /** Table creation */
             var scrollableTable = new scrollableTable('scrollableTable', 'wrapper')
             scrollableTable.setTableHeader(["Name", "Id", "Value"])
-            scrollableTable.setTreeTableContent(testData, "testDataEventType", ["name", "id","value"], "subtree")
+            scrollableTable.setTableContent(testData, "testDataEventType", ["name", "id","value"], "subtree")
             scrollableTable.setTableHeight( () => { return $( window ).height() - 118 } )
             // or e.g.: scrollableTable.setTableHeight(500)
             scrollableTable.expandTree()
+            // scrollableTable.sortByColumnName("Name")
 
             /** Event processing */
             // nestedIndex is an array which contains for every level an index
