@@ -74,7 +74,7 @@ body {
 }
 
 .scrollableTableHeaderBackground {
-  background-image: url('black-unsorted.gif');
+  background-image: url('unsorted-icon.png');
   background-repeat: no-repeat;
   background-position: center right; /* right will be overwritten by js lib  */
 

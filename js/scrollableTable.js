@@ -354,6 +354,11 @@ var scrollableTable = function(id, wrapperId) {
         if (sortDir === undefined) sortDir = 1
         else sortDir = sortDir * -1
         columnButton.attr('sortDir', sortDir)
+        
+        // reset and set sort icons
+        $('#scrollableTable > thead > tr > th > div').css('background-image', "url('css/unsorted-icon.png')")
+        if (sortDir == -1) columnButton.children('div').css('background-image', "url('css/dasc-icon.png')")
+        else columnButton.children('div').css('background-image', "url('css/asc-icon.png')")
 
         console.log("sort by column (Name: %s, Index: %d, direction: %d)", columnButton.text(), columnIndex, sortDir)
         sortSubtreeByColumn(parentId, columnIndex, sortDir)
