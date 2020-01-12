@@ -193,9 +193,12 @@ var scrollableTable = function(id, wrapperId) {
             $(this).append( $('<span>').text(divElem.text()) )
             divElem.width( 0 )
         })
+
         // Adjust size
         $('#'+id+' > thead > tr').children('th').each(function () {
-            $(this).children().first().width( $(this).width() )
+            var div = $(this).children().first()
+            div.width( $(this).width() )
+            div.css('background-position-x', $(this).width()-15)
             $(this).width( $(this).width() )
         })
         // remove text from th

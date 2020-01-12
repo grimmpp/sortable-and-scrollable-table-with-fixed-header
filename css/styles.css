@@ -17,7 +17,7 @@ body {
   position: relative;
   border: 1px solid darkgrey;
   padding-top: 36px;
-  background: rgb(169, 211, 240);
+  /* background: rgb(169, 211, 240); */
   top: 39px;
   left: -1px;
   width: 600px;
@@ -28,21 +28,26 @@ body {
   overflow-y: scroll;
   overflow-x: hidden;
   background-color: white;
-  /* HEIGHT CAN BE SET HERE */
-  /* height: 500px; */
+  border-top: 2px solid black;
 }
+
 .scrollableTable {
   border-spacing: 0;
   width: 100%;
   background: white;
 }
 
+.scrollableTable tr:first-child td{
+  border: none;
+}
+
 .scrollableTable td  {
-  border: 1px solid rgb(200, 200, 200);
+  /* border: 1px solid rgb(200, 200, 200); */
+  border-top: 1px darkgrey dotted;
   border-bottom: none;
   border-left: none;
 
-  padding: 4px 4px;
+  padding: 8px 4px;
   padding-right: 30px;
 
   cursor: pointer;
@@ -54,32 +59,26 @@ body {
   padding: 0px;
   padding-left: 4px;
   padding-right: 12px;
-  /* background: rgb(169, 211, 240); */
 }
 
 .scrollableTable th div{
   position: absolute;
-  color: rgb(100,100,100);
+  color: black;
   padding: 9px 4px;
-  top: 0;
-  margin: 0 -5px;
   line-height: normal;
-  border-left: 1px solid rgb(200, 200, 200);
   text-align: left;
+  vertical-align: middle;
   white-space: nowrap;
-  font-size: 12pt;
+  font-size: 11pt;
+  top: 2px;
 }
 
 .scrollableTableHeaderBackground {
   background-image: url('black-unsorted.gif');
   background-repeat: no-repeat;
-  background-position: center right;
+  background-position: center right; /* right will be overwritten by js lib  */
 
   cursor: pointer;
-}
-
-.scrollableTable th:first-child div{
-  border: none;
 }
 
 .scrollableTableCollapsed {
