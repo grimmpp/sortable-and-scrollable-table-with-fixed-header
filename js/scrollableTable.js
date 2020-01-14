@@ -73,6 +73,8 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
     /** ###########    HTML Widget Functions    ########### */
 
     var createHtmlWidget = function() {
+        resetMetadata()
+
         $('<section>').addClass("scrollableTableSection").append(
             $('<div>').attr('id', id+'_scrollableTableContainer').addClass("scrollableTableContainer").append(
                 $('<table>').attr('id', id).addClass("scrollableTable").append(
@@ -579,11 +581,15 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
 
         for(var cIndex in metadata.columnNames) {
             var cName = metadata.columnNames[cIndex]
-            var text = rowInfo.dataEntry[cName].toString().toLowerCase()
+            
+            if (rowInfo.dataEntry[cName] !== undefined) {
+                var text = rowInfo.dataEntry[cName].toString().toLowerCase()
 
-            for(var sIndex in metadata.filter) {
-                var sStr = metadata.filter[sIndex]
-                if (text.indexOf(sStr) > -1) return true
+                if (metadata.filter.length == 0) return true
+                for(var sIndex in metadata.filter) {
+                    var sStr = metadata.filter[sIndex]
+                    if (text.indexOf(sStr) > -1) return true
+                }
             }
         }
 
