@@ -81,12 +81,13 @@
             }
 
             /** Table creation */
-            var scrollableTable = new scrollableTable('scrollableTable', 'wrapper')
+            var scrollableTable = new scrollableTable(/* unique id */ 'scrollableTable', /* HTML wrapper id */ 'wrapper', /* enable logging*/ true)
             scrollableTable.setTableHeader(["Name", "Id", "Value"])
-            scrollableTable.setTableContent(testData, "testDataEventType", ["name", "id","value"], "subtree")
+            scrollableTable.setTableContent(testData, "testDataEventType", ["name", "id","value"], /* optional parameter for TreeTable */ "subtree")
             /* optional */ scrollableTable.setTableHeight( () => { return $( window ).height() - 166 } )
-                           // or e.g.: scrollableTable.setTableHeight(500)
+                           // or alternatively e.g.: scrollableTable.setTableHeight(500)
             /* optional */ scrollableTable.expandTree()
+            // /* optional */ scrollableTable.collapseTree()
             /* optional */ scrollableTable.setCompareFunctionForSorting( function(a,b) {
                 return a.localeCompare(b, undefined, {usage: 'sort', numeric: true, sensitivity: 'base'}) 
             })
@@ -94,18 +95,15 @@
 
 
 
-            /** Event processing */
-            // nestedIndex is an array which contains for every level an index
-            $( document ).on("testDataEventType", function(event, nestedIndex) {
-                console.log("NestedIndex: "+JSON.stringify(nestedIndex))
-                
-                var object = testData[nestedIndex[0]]
-                for(var i=1; i<nestedIndex.length; i++) { object = object.subtree[nestedIndex[i]] }
-                
+            /** 
+             * Event processing 
+             * data type: {rowId: '<<STRING>>', data: {<<ORIGINAL DATA ENTRY of the selected row>>}}
+            */
+            $( document ).on("testDataEventType", function(event, data) {
                 $('#displayArea').html(
-                    "'testDataEventType' from row with ID: "+JSON.stringify(nestedIndex) +" was triggered.\n\n"+ 
+                    "'testDataEventType' from row with ID: '" + data.rowId +"' was triggered.\n\n"+ 
                     "Row data: \n" +
-                    JSON.stringify( object, null, 4) )
+                    JSON.stringify( data.data, null, 4) )
             });
 
             function filterTable() {
