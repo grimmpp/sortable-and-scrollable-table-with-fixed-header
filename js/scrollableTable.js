@@ -78,7 +78,7 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
         $('<section>').addClass("scrollableTableSection").append(
             $('<div>').attr('id', id+'_scrollableTableContainer').addClass("scrollableTableContainer").append(
                 $('<table>').attr('id', id).addClass("scrollableTable").append(
-                    $('<thead>').attr("id", "scrollableTableHeader"), $('<tbody>') )
+                    $('<thead>').attr("id", id+"_scrollableTableHeader"), $('<tbody>') )
         )).prependTo('#'+wrapperId);
 
         $(document).keydown(function(e) { 
@@ -267,7 +267,7 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
                     .click(() => {root.sortByColumnIndex(index)})
             )
         });
-        trElem.appendTo("#scrollableTableHeader")
+        trElem.appendTo('#'+id+'_scrollableTableHeader')
     }
 
     /**
@@ -294,7 +294,7 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
         // this is only needed so that the browser can calculate the original width
         $('#'+id+' > thead > tr > th').children('span').remove()
 
-        $('#scrollableTableHeader > tr > th > div').addClass('scrollableTableHeaderBackground')
+        $('#'+id+'_scrollableTableHeader > tr > th > div').addClass('scrollableTableHeaderBackground')
     }
 
     this.setTableContent = function(data, eventType, columnNames, subtreePropertyName="") {
