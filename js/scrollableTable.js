@@ -301,6 +301,8 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
         if (subtreePropertyName === undefined) subtreePropertyName = ""
         isTreeTable = subtreePropertyName != ""
 
+        $('#'+id+' > tbody').empty()
+
         resetMetadata(data, columnNames, eventType, subtreePropertyName)
 
         initiallyPrepareMetaData(metadata.data, metadata.rowInfo, 0, 1, [])
@@ -445,8 +447,9 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
         lastSelectedRow = ""
         resetMetadata()
 
-        $('#scrollableTable > thead').empty()
-        $('#scrollableTable > tbody').empty()
+        console.log(id)
+        $('#'+id+' > thead').empty()
+        $('#'+id+' > tbody').empty()
     }
 
     /** ###########    END CREATE TABLE FUNCTIONS    ########### */
