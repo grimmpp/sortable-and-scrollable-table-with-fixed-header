@@ -4,13 +4,14 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
     var logging = enableLogging
     var root = this
     var lastRowId = 0
+    var enabledSingleSelect = true
     var metadata = {}
 
 
     this.enableLogging = function(enabled = true) {
         logging = enabled
     }
-
+    
     /** ###########    Metadata Functions    ########### */
 
 
@@ -37,6 +38,8 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
             nestedIds.forEach((_i) => _ids.push(_i))
             _ids.push(lastRowId)
 
+            replaceUndefinedThroughEmptyStringInDataEntry(data[index])
+
             rowInfo = {
                 rowId: rowId,
                 id: lastRowId,
@@ -62,6 +65,12 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
                 initiallyPrepareMetaData(dataSubtree, rowInfoSubtree, lastRowId, level+1, _ids)
             }
         })
+    }
+
+    function replaceUndefinedThroughEmptyStringInDataEntry(data) {
+        metadata.columnNames.forEach(cName => {
+            if (data[cName] === undefined) data[cName] = ''
+        })   
     }
 
 
@@ -143,6 +152,24 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
 
     /** ###########    SELECTION OF ROWS    ########### */
 
+
+    var showPointer = function() {
+        if (enabledSingleSelect) {
+            
+            $('#'+id+' > tbody > tr').css('cursor','pointer')
+        } 
+        else {
+            $('#'+id+' > tbody > tr').css('cursor','auto')
+        }
+    }
+
+    this.enableSingleSelect = function(enabled=true) {
+        enabledSingleSelect = enabled
+
+        if (!enabledSingleSelect) clearAllSelectedRows()
+        showPointer()
+    }
+
     var clearAllSelectedRows = function() {
         metadata.selectedRows.forEach( (rowInfo) => {
             rowInfo.isSelected = false
@@ -153,21 +180,24 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
     }
 
     var chickHandlerForSelectRow = function(rowInfo) {
-        
-        var isSelected = rowInfo.isSelected
 
-        clearAllSelectedRows()
+        if (enabledSingleSelect) {
 
-        rowInfo.isSelected = !isSelected
+            var isSelected = rowInfo.isSelected
 
-        if (rowInfo.isSelected) metadata.selectedRows.push(rowInfo)
-        
-        showRowSelection(rowInfo)
+            clearAllSelectedRows()
 
-        if (rowInfo.isSelected) $(document).trigger( metadata.eventType, {rowId: rowInfo.rowId, data: rowInfo.dataEntry} )
-        else $(document).trigger( metadata.eventType, null )
+            rowInfo.isSelected = !isSelected
 
-        if (logging) console.log("Selected Row id: "+rowInfo.rowId)
+            if (rowInfo.isSelected) metadata.selectedRows.push(rowInfo)
+            
+            showRowSelection(rowInfo)
+
+            if (rowInfo.isSelected) $(document).trigger( metadata.eventType, {rowId: rowInfo.rowId, data: rowInfo.dataEntry} )
+            else $(document).trigger( metadata.eventType, null )
+
+            if (logging) console.log("Selected Row id: "+rowInfo.rowId)
+        }
     }
 
     var showRowSelection = function(rowInfo) {
@@ -183,7 +213,7 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
         
         // if (metadata.selectedRows.length == 1) {
             var rowInfo = metadata.selectedRows[0]
-            var firstRow = $('#scrollableTable > tbody > tr:first')
+            var firstRow = $('#'+id+' > tbody > tr:first')
 
             if (rowInfo.rowId != firstRow.attr('id')) {
                 var prevTR = $('#'+rowInfo.rowId).prev()
@@ -198,7 +228,7 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
 
     var selectNextRow = function() {
         var rowInfo = metadata.selectedRows[0]
-        var lastRow = $('#scrollableTable > tbody > tr:last')
+        var lastRow = $('#'+id+' > tbody > tr:last')
 
         if (rowInfo.rowId != lastRow.attr('id')) {
             var nextTR = $('#'+rowInfo.rowId).next()
@@ -301,8 +331,6 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
         if (subtreePropertyName === undefined) subtreePropertyName = ""
         isTreeTable = subtreePropertyName != ""
 
-        $('#'+id+' > tbody').empty()
-
         resetMetadata(data, columnNames, eventType, subtreePropertyName)
 
         initiallyPrepareMetaData(metadata.data, metadata.rowInfo, 0, 1, [])
@@ -311,8 +339,9 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
     }
 
     this.refreshTableContent = function() {
-        $('#scrollableTable > tbody').empty()
+        $('#'+id+' > tbody').empty()
         createSubtree(metadata.rowInfo)
+        showPointer()
 
         adjustHeaderSize()
     }
@@ -465,13 +494,13 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
     /** ###########    SORT FUNCTIONS    ########### */
 
     this.sortByColumnName = function(columnName) {
-        var columnButton = $('#scrollableTable > thead > tr > th:contains("'+columnName+'")')
+        var columnButton = $('#'+id+' > thead > tr > th:contains("'+columnName+'")')
         var index = columnButton.parent().children().index(columnButton)
 
         // error message
         if (index == -1) {
             var validNames = []
-            $('#scrollableTable > thead > tr > th > div').each((i, div) => validNames.push(div.innerText))
+            $('#'+id+' > thead > tr > th > div').each((i, div) => validNames.push(div.innerText))
             console.log("'%s' is no valid column name. Valid names are: %s", columnName, JSON.stringify(validNames))
         }
 
@@ -485,13 +514,13 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
 
         // swop sort directions
         var sortDir = columnButton.attr('sortDir')
-        $('#scrollableTable > thead > tr > th').removeAttr('sortDir');
+        $('#'+id+' > thead > tr > th').removeAttr('sortDir');
         if (sortDir === undefined) sortDir = 1
         else sortDir = sortDir * -1
         columnButton.attr('sortDir', sortDir)
         
         // reset and set sort icons
-        $('#scrollableTable > thead > tr > th > div').css('background-image', "url('css/unsorted-icon.png')")
+        $('#'+id+' > thead > tr > th > div').css('background-image', "url('css/unsorted-icon.png')")
         if (sortDir == -1) columnButton.children('div').css('background-image', "url('css/dasc-icon.png')")
         else columnButton.children('div').css('background-image', "url('css/asc-icon.png')")
 
@@ -500,14 +529,14 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
         sortSubtreeByColumn(metadata.rowInfo, metadata.columnNames[columnIndex], sortDir)
 
         // remove all flags
-        $('#scrollableTable > tbody > tr').removeAttr('subtreeSorted');
+        $('#'+id+' > tbody > tr').removeAttr('subtreeSorted');
         root.refreshTableContent()
 
         if (logging) console.log("Sorting and redrawing the table took %d milli seconds.", (performance.now() - startMilli))
     }
 
     this.getSortInfo = function() {
-        var columnButton = $('#scrollableTable > thead > tr > th[sortDir]')
+        var columnButton = $('#'+id+' > thead > tr > th[sortDir]')
         var index = columnButton.parent().children().index(columnButton)
 
         return {
@@ -534,6 +563,7 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
             if (a.rowInfoSubtree.length > 0) {
                 sortSubtreeByColumn(a.rowInfoSubtree, columnName, sortDir)
             }
+
             return compareFunction(a.dataEntry[columnName].toString(), b.dataEntry[columnName]) * sortDir
         })
         root.refreshTableContent()
