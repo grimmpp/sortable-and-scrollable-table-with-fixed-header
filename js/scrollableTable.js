@@ -156,10 +156,10 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
     var showPointer = function() {
         if (enabledSingleSelect) {
             
-            $('#'+id+' > tbody > tr').css('cursor','pointer')
+            $('#'+id+' > tbody').css('cursor','pointer')
         } 
         else {
-            $('#'+id+' > tbody > tr').css('cursor','auto')
+            $('#'+id+' > tbody').css('cursor','auto')
         }
     }
 
@@ -286,6 +286,7 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
     this.setTableHeader = function(names) {
         // clear first
         $('#'+id+' > thead').empty()
+        $('#'+id+' > thead').css('cursor', 'pointer')
 
         // create headlines
         var trElem = $('<tr>');
@@ -472,12 +473,11 @@ var scrollableTable = function(id, wrapperId, enableLogging=false) {
     }
 
 
-    this.clearTableContent = function() {
+    this.clearTableContent = function(clearHead=false) {
         lastSelectedRow = ""
         resetMetadata()
 
-        console.log(id)
-        $('#'+id+' > thead').empty()
+        if (clearHead) $('#'+id+' > thead').empty()
         $('#'+id+' > tbody').empty()
     }
 
